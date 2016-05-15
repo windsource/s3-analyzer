@@ -1,34 +1,34 @@
-"use strict";
+'use strict';
 
 const S3 = require('../src/s3.js');
 
 describe('Testing S3', () => {
-
   let s3;
-  const newBucketName = "dummybxucketbghbjgrjgajrghjarsfh";
+  const newBucketName = 'dummybxucketbghbjgrjgajrghjarsfh';
 
-  before(function () {
-    s3 = new S3("eu-west-1");
+  before(() => {
+    s3 = new S3('eu-west-1');
   });
 
   it('should create a new bucket', (done) => {
-    s3.createBucket(newBucketName, () => {
+    s3.createBucket(newBucketName).then(() => {
       done();
     });
   });
 
   it('should list my buckets', (done) => {
-    s3.listBuckets( () => {
+    s3.listBuckets().then((res) => {
+      console.log(res);
       done();
     });
   });
 
   it('should delete the new bucket', (done) => {
-    s3.deleteBucket(newBucketName, () => {
+    s3.deleteBucket(newBucketName).then(() => {
       done();
     });
   });
 
-  after(function () {
+  after(() => {
   });
 });
