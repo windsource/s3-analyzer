@@ -3,13 +3,19 @@
   "version": "0.0.1",
   "description": "Tool for analyzing AWS S3 files.",
   "main": "index.js",
+  "repository" : {
+    "type" : "git",
+    "url" : "https://git.windwolke.de/windsource/s3-analyzer.git"
+  },
   "scripts": {
+    "start": "node src/index.js",
     "test": "mocha --require test/helpers/chai.js"
   },
   "author": "Holger Dormann",
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.3.11"
+    "aws-sdk": "^2.3.11",
+    "prettysize": "0.0.3"
   },
   "devDependencies": {
     "babel-register": "^6.2.0",

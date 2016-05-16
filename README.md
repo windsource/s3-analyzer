@@ -2,6 +2,14 @@
 
 Tool to analyze content stored on AWS S3.
 
+## Usage
+
+```bash
+npm start <region> <bucket>
+```
+
+Prints the size of the bucket.
+
 ## Features
 
 Feature                                                           | Status

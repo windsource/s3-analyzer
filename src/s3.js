@@ -99,7 +99,6 @@ class S3 {
   }
 
   _calcBucketSize(bucketName, prevSize, continuationToken) {
-    console.log('eins');
     return new Promise((fulfill, reject) => {
       let size = prevSize || 0;
       this.listObjects(bucketName, continuationToken).then((listRes) => {
