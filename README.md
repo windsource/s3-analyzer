@@ -4,11 +4,16 @@ Tool to analyze content stored on AWS S3.
 
 ## Usage
 
+Run the command line version to print the size of a bucket:
 ```bash
-npm start <region> <bucket>
+node main <region> <bucket>
 ```
 
-Prints the size of the bucket.
+Run the web UI:
+```bash
+node server
+```
+
 
 ## Features
 
@@ -16,5 +21,5 @@ Feature                                                           | Status
 ----------------------------------------------------------------- | ------
 Select the AWS region to use                                      | done
 Sum up the size of all objects in one bucket                      | done
+Web UI                                                            | in progress
 Sum up the size of all objects with a common prefix in one bucket | planned
-Web UI                                                            | planned

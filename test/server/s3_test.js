@@ -1,6 +1,6 @@
 'use strict';
 
-const S3 = require('../src/s3.js');
+const S3 = require('../../server/s3.js');
 
 describe('Testing S3', () => {
   let s3;

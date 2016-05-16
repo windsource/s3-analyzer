@@ -2,10 +2,10 @@
 
 const pretty = require('prettysize');
 
-const S3 = require('./s3.js');
+const S3 = require('./server/s3.js');
 
 if (process.argv.length < 4) {
-  console.log('Usage: node start <region> <bucketName>');
+  console.log('Usage: node main <region> <bucketName>');
   console.log('Get the size of an AWS S3 bucket.');
   console.log('Example: node start eu-central-1 mybucket\n');
   process.exit(1);
