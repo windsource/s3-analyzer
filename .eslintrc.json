@@ -10,7 +10,8 @@
   "rules": {
     "semi": 2,
     "strict": 0,
-    "no-console": 0
+    "no-console": 0,
+    "no-underscore-dangle": ["error", { "allowAfterThis": true }]
   },
   "env": {
     "mocha": true
