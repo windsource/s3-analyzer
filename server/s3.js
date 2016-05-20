@@ -95,29 +95,27 @@ class S3 {
    * @returns {Promise} that returns the size.
    */
   getBucketSize(bucketName) {
-    return this._calcBucketSize(bucketName);
+    return new Promise((fulfill, reject) => {
+      this._calcBucketSize(bucketName, 0, null, (err, data) => {
+        if (err) reject(err);
+        else fulfill(data);
+      });
+    });
   }
 
-  _calcBucketSize(bucketName, prevSize, continuationToken) {
-    return new Promise((fulfill, reject) => {
-      let size = prevSize || 0;
-      this.listObjects(bucketName, continuationToken).then((listRes) => {
-        for (const o of listRes.Contents) {
-          size += o.Size;
-        }
-        if (listRes.hasOwnProperty('NextContinuationToken')) {
-          this._calcBucketSize(bucketName, size, listRes.NextContinuationToken).then((calcRes) => {
-            fulfill(calcRes);
-          }, (err) => {
-            reject(err);
-          });
-        } else {
-          // size calculation is finished
-          fulfill(size);
-        }
-      }, (err) => {
-        reject(err);
-      });
+  _calcBucketSize(bucketName, prevSize, continuationToken, callback) {
+    let size = prevSize || 0;
+    this.listObjects(bucketName, continuationToken).then((listRes) => {
+      for (const o of listRes.Contents) {
+        size += o.Size;
+      }
+      if (listRes.hasOwnProperty('NextContinuationToken')) {
+        this._calcBucketSize(bucketName, size, listRes.NextContinuationToken, callback);
+      } else {
+        callback(null, size);
+      }
+    }, (err) => {
+      callback(err);
     });
   }
 
