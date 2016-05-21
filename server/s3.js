@@ -92,27 +92,35 @@ class S3 {
   /**
    * Get the size of a bucket (i.e. the sum of all objects' size in that bucket)
    * @param {string} bucketName name of the bucket
-   * @returns {Promise} that returns the size.
+   * @returns {Promise} that returns the size and number of objects.
    */
   getBucketSize(bucketName) {
+    const start = new Date();
     return new Promise((fulfill, reject) => {
-      this._calcBucketSize(bucketName, 0, null, (err, data) => {
+      this._calcBucketSize(bucketName, null, null, (err, data) => {
         if (err) reject(err);
-        else fulfill(data);
+        else {
+          const res = data;
+          if (res) {
+            res.executionTime = new Date() - start;
+          }
+          fulfill(data);
+        }
       });
     });
   }
 
-  _calcBucketSize(bucketName, prevSize, continuationToken, callback) {
-    let size = prevSize || 0;
+  _calcBucketSize(bucketName, prev, continuationToken, callback) {
+    const now = prev || { size: 0, count: 0 };
     this.listObjects(bucketName, continuationToken).then((listRes) => {
       for (const o of listRes.Contents) {
-        size += o.Size;
+        now.size += o.Size;
+        now.count++;
       }
       if (listRes.hasOwnProperty('NextContinuationToken')) {
-        this._calcBucketSize(bucketName, size, listRes.NextContinuationToken, callback);
+        this._calcBucketSize(bucketName, now, listRes.NextContinuationToken, callback);
       } else {
-        callback(null, size);
+        callback(null, now);
       }
     }, (err) => {
       callback(err);

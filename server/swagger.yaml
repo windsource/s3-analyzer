@@ -1,0 +1,59 @@
+swagger: '2.0'
+info:
+  title: S3 Analyzer
+  description: Descripes the I/F between client and server for the S3 Analyzer
+  version: "0.0.1"
+host: localhost:3000
+schemes:
+  - http
+produces:
+  - application/json
+basePath: /api
+paths:
+  /list:
+    get:
+      summary: List buckets
+      description: |
+        Returns a list of AWS S3 buckets including name and region.
+      responses:
+        200:
+          description: A list of buckets
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                bucketName:
+                  type: string
+                  description: Name of the buckets.
+  /size/{bucket_name}/{region}:
+    get:
+      summary: Size of a bucket
+      description: |
+        Get the size of a bucket which is the sum of all the object's size in a bucket
+      parameters:
+        - name: bucket_name
+          in: path
+          description: Name of the bucket to get the size of
+          required: true
+          type: string
+        - name: region
+          in: path
+          description: AWS region that bucket is located in
+          required: true
+          type: string
+      responses:
+        200:
+          description: Size of the bucket
+          schema:
+            type: object
+            properties:
+              size:
+                type: integer
+                description: Size in bytes
+              count:
+                type: integer
+                description: Number of objects in that bucket.
+              executionTime:
+                type: integer
+                description: Time in ms it took to retrueve the size.

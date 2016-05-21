@@ -8,7 +8,7 @@
     "url" : "https://git.windwolke.de/windsource/s3-analyzer.git"
   },
   "scripts": {
-    "start": "node src/index.js",
+    "start": "node server",
     "test": "mocha --require test/helpers/chai.js --recursive"
   },
   "author": "Holger Dormann",
