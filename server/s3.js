@@ -8,7 +8,7 @@ class S3 {
    * @param {string} region AWS region like 'eu-west-1', 'eu-central-1', etc.
    */
   constructor(region) {
-    this.region = region;
+    this.region = region || 'eu-west-1';
     if (this.region === 'eu-central-1') {
       AWS.config.update({ region: this.region, signatureVersion: 'v4' });
       const ep = new AWS.Endpoint('s3.eu-central-1.amazonaws.com');
@@ -63,6 +63,23 @@ class S3 {
         Bucket: name,
       };
       this.s3.deleteBucket(params, (err, data) => {
+        if (err) reject(err);
+        else fulfill(data);
+      });
+    });
+  }
+
+  /**
+   * Get the region a bucket is stored in
+   * @param {string} name of the bucket
+   * @returns {Promise} that returns the AWS output.
+   */
+  getBucketRegion(name) {
+    return new Promise((fulfill, reject) => {
+      const params = {
+        Bucket: name,
+      };
+      this.s3.getBucketLocation(params, (err, data) => {
         if (err) reject(err);
         else fulfill(data);
       });

@@ -15,13 +15,31 @@ router.use((req, res, next) => {
 });
 
 router.get('/list', (req, res) => {
-  const s3 = new S3('eu-west-1');
+  const s3 = new S3();
   s3.listBuckets().then((bucketList) => {
     const resultList = [];
     for (const o of bucketList.Buckets) {
       resultList.push({ bucketName: o.Name });
     }
     res.json(resultList);
+  }, (err) => {
+    res.status(500).json(err);
+  });
+});
+
+router.get('/region/:bucketName', (req, res) => {
+  const s3 = new S3();
+  s3.getBucketRegion(req.params.bucketName).then((region) => {
+    res.json(region.LocationConstraint);
+  }, (err) => {
+    res.status(500).json(err);
+  });
+});
+
+router.get('/size/:bucketName/:region', (req, res) => {
+  const s3 = new S3(req.params.region);
+  s3.getBucketSize(req.params.bucketName).then((bucketSize) => {
+    res.json(bucketSize);
   }, (err) => {
     res.status(500).json(err);
   });

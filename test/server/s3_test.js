@@ -23,6 +23,13 @@ describe('Testing S3', () => {
     }, done);
   });
 
+  it('should get the region of a bucket', (done) => {
+    s3.getBucketRegion(newBucketName).then((res) => {
+      console.log(res);
+      done();
+    }, done);
+  });
+
   it('should list objects in bucket', (done) => {
     s3.listObjects(newBucketName).then((res) => {
       console.log(res);

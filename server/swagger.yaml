@@ -26,6 +26,21 @@ paths:
                 bucketName:
                   type: string
                   description: Name of the buckets.
+  /region/{bucket_name}:
+    get:
+      summary: Get the region of a bucket
+      description: Returns the region of a bucket
+      parameters:
+        - name: bucket_name
+          in: path
+          description: Name of the bucket to get the region of
+          required: true
+          type: string
+      responses:
+        200:
+          description: Region name
+          schema:
+            type: string
   /size/{bucket_name}/{region}:
     get:
       summary: Size of a bucket
