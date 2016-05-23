@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import PleaseWait from './PleaseWait';
 import BucketRow from './BucketRow';
 
-const BucketTable = ({ list }) => {
+const BucketTable = ({ list, loadRegion }) => {
   if (!list) {
     return <PleaseWait />;
   }
@@ -12,13 +12,14 @@ const BucketTable = ({ list }) => {
         <th>Name</th>
         <th>Region</th>
       </tr></thead>
-      <tbody>{list.map((o) => (<BucketRow bucket={o} />))}</tbody>
+      <tbody>{list.map((o) => (<BucketRow bucket={o} loadRegion={loadRegion} />))}</tbody>
     </table>
   );
 };
 
 BucketTable.propTypes = {
   list: PropTypes.array,
+  loadRegion: PropTypes.func.isRequired,
 };
 
 export default BucketTable;

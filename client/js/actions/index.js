@@ -13,7 +13,7 @@ export const GET_REGION = 'GET_REGION';
 export const GET_REGION_SUCCESS = 'GET_REGION_SUCCESS';
 export const GET_REGION_FAILURE = 'GET_REGION_FAILURE';
 
-export const getRegion = (bucketName) => ({ type: GET_LIST, bucketName });
+export const getRegion = (bucketName) => ({ type: GET_REGION, bucketName });
 export const getRegionSuccess = (bucketName, region) => (
   {
     type: GET_REGION_SUCCESS,
@@ -39,7 +39,7 @@ export const retrieveList = () => {
 export const retrieveRegion = (bucketName) => {
   return dispatch => {
     dispatch(getRegion(bucketName));
-    return fetch('/api/region/${bucketName}')
+    return fetch(`/api/region/${bucketName}`)
       .then(response => response.json())
       .then(json => dispatch(getRegionSuccess(bucketName, json)));
   };

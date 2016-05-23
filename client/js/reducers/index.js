@@ -1,15 +1,14 @@
-import { GET_LIST, GET_LIST_FAILURE, GET_LIST_SUCCESS,
- GET_REGION, GET_REGION_FAILURE, GET_REGION_SUCCESS } from '../actions';
+import * as types from '../actions';
 
 const buckets = (state = [], action) => {
   switch (action.type) {
-    case GET_LIST:
+    case types.GET_LIST:
       return { listReq: 'pending' };
-    case GET_LIST_SUCCESS:
+    case types.GET_LIST_SUCCESS:
       return { listReq: 'success', list: action.list };
-    case GET_LIST_FAILURE:
+    case types.GET_LIST_FAILURE:
       return { listReq: 'failure', listErr: action.err };
-    case GET_REGION: {
+    case types.GET_REGION: {
       if (!state.list) return state;
       const list = state.list.map((o) => {
         if (o.bucketName === action.bucketName) {
@@ -19,7 +18,7 @@ const buckets = (state = [], action) => {
       });
       return Object.assign({}, state, { list });
     }
-    case GET_REGION_SUCCESS: {
+    case types.GET_REGION_SUCCESS: {
       if (!state.list) return state;
       const list = state.list.map((o) => {
         if (o.bucketName === action.bucketName) {
@@ -29,7 +28,7 @@ const buckets = (state = [], action) => {
       });
       return Object.assign({}, state, { list });
     }
-    case GET_REGION_FAILURE: {
+    case types.GET_REGION_FAILURE: {
       if (!state.list) return state;
       const list = state.list.map((o) => {
         if (o.bucketName === action.bucketName) {
