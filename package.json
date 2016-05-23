@@ -9,7 +9,9 @@
   },
   "scripts": {
     "start": "node server",
-    "test": "mocha --require test/helpers/chai.js --recursive"
+    "testClient": "mocha --compilers js:babel-core/register --require test/helpers/chai.js --recursive test/client",
+    "testServer": "mocha --require test/helpers/chai.js --recursive test/server",
+    "test": "npm run testClient && npm run testServer"
   },
   "author": "Holger Dormann",
   "license": "MIT",
