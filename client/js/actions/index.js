@@ -27,20 +27,60 @@ export const getRegionFailure = (bucketName, err) => (
     err,
   });
 
+export const GET_SIZE = 'GET_SIZE';
+export const GET_SIZE_SUCCESS = 'GET_SIZE_SUCCESS';
+export const GET_SIZE_FAILURE = 'GET_SIZE_FAILURE';
+
+export const getSize = (bucketName) => ({ type: GET_SIZE, bucketName });
+export const getSizeSuccess = (bucketName, size) => (
+  {
+    type: GET_SIZE_SUCCESS,
+    bucketName,
+    size,
+  });
+export const getSizeFailure = (bucketName, err) => (
+  {
+    type: GET_SIZE_FAILURE,
+    bucketName,
+    err,
+  });
+
+
 export const retrieveList = () => {
   return dispatch => {
     dispatch(getList());
+    let status = 0;
     return fetch('/api/list')
-      .then(response => response.json())
-      .then(json => dispatch(getListSuccess(json)));
+      .then(response => { status = response.status; return response.json(); })
+      .then(json => {
+        if (status === 200) dispatch(getListSuccess(json));
+        else dispatch(getListFailure(json));
+      });
   };
 };
 
 export const retrieveRegion = (bucketName) => {
   return dispatch => {
     dispatch(getRegion(bucketName));
+    let status = 0;
     return fetch(`/api/region/${bucketName}`)
-      .then(response => response.json())
-      .then(json => dispatch(getRegionSuccess(bucketName, json)));
+      .then(response => { status = response.status; return response.json(); })
+      .then(json => {
+        if (status === 200) dispatch(getRegionSuccess(bucketName, json));
+        else dispatch(getRegionFailure(bucketName, json));
+      });
+  };
+};
+
+export const retrieveSize = (bucketName, region) => {
+  return dispatch => {
+    dispatch(getSize(bucketName));
+    let status = 0;
+    return fetch(`/api/size/${bucketName}/${region}`)
+      .then(response => { status = response.status; return response.json(); })
+      .then(json => {
+        if (status === 200) dispatch(getSizeSuccess(bucketName, json));
+        else dispatch(getSizeFailure(bucketName, json));
+      });
   };
 };

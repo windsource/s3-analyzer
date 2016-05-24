@@ -32,7 +32,38 @@ const buckets = (state = [], action) => {
       if (!state.list) return state;
       const list = state.list.map((o) => {
         if (o.bucketName === action.bucketName) {
-          return Object.assign({}, o, { regionReq: 'success', regionErr: action.err });
+          return Object.assign({}, o, { regionReq: 'failure', regionErr: action.err });
+        }
+        return o;
+      });
+      return Object.assign({}, state, { list });
+    }
+
+    case types.GET_SIZE: {
+      if (!state.list) return state;
+      const list = state.list.map((o) => {
+        if (o.bucketName === action.bucketName) {
+          return Object.assign({}, o, { sizeReq: 'pending' });
+        }
+        return o;
+      });
+      return Object.assign({}, state, { list });
+    }
+    case types.GET_SIZE_SUCCESS: {
+      if (!state.list) return state;
+      const list = state.list.map((o) => {
+        if (o.bucketName === action.bucketName) {
+          return Object.assign({}, o, { sizeReq: 'success', size: action.size });
+        }
+        return o;
+      });
+      return Object.assign({}, state, { list });
+    }
+    case types.GET_SIZE_FAILURE: {
+      if (!state.list) return state;
+      const list = state.list.map((o) => {
+        if (o.bucketName === action.bucketName) {
+          return Object.assign({}, o, { sizeReq: 'failure', sizeErr: action.err });
         }
         return o;
       });
