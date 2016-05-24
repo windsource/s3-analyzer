@@ -30,7 +30,14 @@ router.get('/list', (req, res) => {
 router.get('/region/:bucketName', (req, res) => {
   const s3 = new S3();
   s3.getBucketRegion(req.params.bucketName).then((region) => {
-    res.json(region.LocationConstraint);
+    let result = region.LocationConstraint;
+    // If there is no LocationConstraint, the bucket is located in
+    // region 'US Standard' which is us-east-1.
+    // See also https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region
+    if (result.length === 0) {
+      result = 'us-east-1';
+    }
+    res.json(result);
   }, (err) => {
     res.status(500).json(err);
   });
