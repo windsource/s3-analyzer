@@ -46,19 +46,6 @@ export const getSizeFailure = (bucketName, err) => (
   });
 
 
-export const retrieveList = () => {
-  return dispatch => {
-    dispatch(getList());
-    let status = 0;
-    return fetch('/api/list')
-      .then(response => { status = response.status; return response.json(); })
-      .then(json => {
-        if (status === 200) dispatch(getListSuccess(json));
-        else dispatch(getListFailure(json));
-      });
-  };
-};
-
 export const retrieveRegion = (bucketName) => {
   return dispatch => {
     dispatch(getRegion(bucketName));
@@ -68,6 +55,24 @@ export const retrieveRegion = (bucketName) => {
       .then(json => {
         if (status === 200) dispatch(getRegionSuccess(bucketName, json));
         else dispatch(getRegionFailure(bucketName, json));
+      });
+  };
+};
+
+export const retrieveList = () => {
+  return dispatch => {
+    dispatch(getList());
+    let status = 0;
+    return fetch('/api/list')
+      .then(response => { status = response.status; return response.json(); })
+      .then(json => {
+        if (status === 200) {
+          dispatch(getListSuccess(json));
+          // For every bucket also load its region
+          for (const o of json) {
+            dispatch(retrieveRegion(o.bucketName));
+          }
+        } else dispatch(getListFailure(json));
       });
   };
 };
