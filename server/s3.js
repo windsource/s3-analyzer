@@ -9,14 +9,22 @@ class S3 {
    */
   constructor(region) {
     this.region = region || 'eu-west-1';
-    if (this.region === 'eu-central-1') {
-      AWS.config.update({ region: this.region, signatureVersion: 'v4' });
-      const ep = new AWS.Endpoint('s3.eu-central-1.amazonaws.com');
-      this.s3 = new AWS.S3({ endpoint: ep });
-    } else {
-      AWS.config.update({ region: this.region });
-      this.s3 = new AWS.S3();
-    }
+
+    const endpoints = new Map();
+    endpoints.set('us-east-1', 's3.amazonaws.com');
+    endpoints.set('us-west-1', 's3-us-west-1.amazonaws.com');
+    endpoints.set('us-west-2', 's3-us-west-2.amazonaws.com');
+    endpoints.set('eu-west-1', 's3-eu-west-1.amazonaws.com');
+    endpoints.set('eu-central-1', 's3.eu-central-1.amazonaws.com');
+    endpoints.set('ap-northeast-1', 's3-ap-northeast-1.amazonaws.com');
+    endpoints.set('ap-northeast-2', 's3.ap-northeast-2.amazonaws.com');
+    endpoints.set('ap-southeast-1', 's3-ap-southeast-1.amazonaws.com');
+    endpoints.set('ap-southeast-2	', 's3-ap-southeast-2.amazonaws.com');
+    endpoints.set('sa-east-1', 's3-sa-east-1.amazonaws.com');
+
+    const endpoint = `https://${endpoints.get(this.region || 's3.amazonaws.com')}`;
+
+    this.s3 = new AWS.S3({ region: this.region, endpoint, signatureVersion: 'v4' });
   }
 
   /**
@@ -72,7 +80,7 @@ class S3 {
   /**
    * Get the region a bucket is stored in
    * @param {string} name of the bucket
-   * @returns {Promise} that returns the AWS output.
+   * @returns {Promise} that returns { region: 'theRegion}
    */
   getBucketRegion(name) {
     return new Promise((fulfill, reject) => {
@@ -81,7 +89,23 @@ class S3 {
       };
       this.s3.getBucketLocation(params, (err, data) => {
         if (err) reject(err);
-        else fulfill(data);
+        else {
+          // transform the location constraint in to a region
+          // see https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region
+          let region = '';
+          switch (data.LocationConstraint) {
+            case '':
+              region = 'us-east-1';
+              break;
+            case 'EU':
+              region = 'eu-west-1';
+              break;
+            default:
+              region = data.LocationConstraint;
+              break;
+          }
+          fulfill({ region });
+        }
       });
     });
   }
