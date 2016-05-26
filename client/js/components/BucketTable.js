@@ -11,7 +11,7 @@ const BucketTable = ({ list, loadSize }) => {
       <thead><tr>
         <th>Name</th>
         <th>Region</th>
-        <th>Size</th>
+        <th>Size / Number of objects</th>
       </tr></thead>
       <tbody>
       {list.map((o) => (<BucketRow bucket={o} loadSize={loadSize} />))}
