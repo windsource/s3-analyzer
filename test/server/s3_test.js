@@ -37,8 +37,11 @@ describe('Testing S3', () => {
     }, done);
   });
 
-  it('should get size of bucket', (done) => {
-    s3.getBucketSize(newBucketName).then((res) => {
+  it('should get size of bucket', function ires(done) {
+    this.timeout(5000);
+    s3.getBucketSize(newBucketName, (data) => {
+      console.log(`Intermediate ${JSON.stringify(data)}`);
+    }).then((res) => {
       console.log(res);
       done();
     }, done);

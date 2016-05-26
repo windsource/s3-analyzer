@@ -9,6 +9,9 @@ const Express = require('express');
 const app = new Express();
 const port = 3000;
 
+const expressWs = require('express-ws');
+expressWs(app);
+
 const compiler = webpack(config);
 app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.publicPath }));
 app.use(webpackHotMiddleware(compiler));

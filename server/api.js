@@ -45,5 +45,18 @@ router.get('/size/:bucketName/:region', (req, res) => {
   });
 });
 
+router.ws('/sizestream/:bucketName/:region', (ws, req) => {
+  const s3 = new S3(req.params.region);
+  s3.getBucketSize(req.params.bucketName, (data) => {
+    ws.send(JSON.stringify({ status: 'pending', size: data }));
+  }).then((bucketSize) => {
+    ws.send(JSON.stringify({ status: 'success', size: bucketSize }));
+    ws.close();
+  }, (err) => {
+    ws.send(JSON.stringify({ status: 'failure', err }));
+    ws.close();
+  });
+});
+
 module.exports = router;
 

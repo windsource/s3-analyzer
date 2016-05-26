@@ -1,5 +1,8 @@
 'use strict';
 
+// Comand line interface
+// For test purpose only. Prefer using the web ui
+
 const pretty = require('prettysize');
 
 const S3 = require('./server/s3.js');

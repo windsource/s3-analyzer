@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
 import BucketTable from '../components/BucketTable';
-import { retrieveSize } from '../actions';
+import { retrieveSizeStream } from '../actions';
 
 const mapStateToProps = (state) => ({ list: state.list });
 
 const mapDispatchToProps = (dispatch) => (
   {
-    loadSize: (bucketName, region) => { dispatch(retrieveSize(bucketName, region)); },
+    loadSize: (bucketName, region) => { dispatch(retrieveSizeStream(bucketName, region)); },
   }
 );
 

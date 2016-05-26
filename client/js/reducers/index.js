@@ -43,7 +43,7 @@ const buckets = (state = [], action) => {
       if (!state.list) return state;
       const list = state.list.map((o) => {
         if (o.bucketName === action.bucketName) {
-          return Object.assign({}, o, { sizeReq: 'pending' });
+          return Object.assign({}, o, { sizeReq: 'pending', size: action.size });
         }
         return o;
       });

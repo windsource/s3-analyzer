@@ -22,9 +22,11 @@ const BucketRow = ({ bucket, loadSize }) => {
   let size = '';
   if (bucket.hasOwnProperty('regionReq') && bucket.regionReq === 'success') {
     if (bucket.hasOwnProperty('sizeReq')) {
-      if (bucket.sizeReq === 'pending') size = <PleaseWait />;
-      else if (bucket.sizeReq === 'failure') size = <LoadingError err={bucket.sizeErr} />;
-      else size = pretty(bucket.size.size);
+      if (bucket.sizeReq === 'failure') size = <LoadingError err={bucket.sizeErr} />;
+      else {
+        if (bucket.sizeReq === 'pending') size = <PleaseWait />;
+        size = <span>{size}{pretty(bucket.size.size)}</span>;
+      }
     } else {
       size = (<button
         type="button"
