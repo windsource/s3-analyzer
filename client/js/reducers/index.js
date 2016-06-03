@@ -1,6 +1,6 @@
 import * as types from '../actions';
 
-const buckets = (state = [], action) => {
+const buckets = (state = {}, action) => {
   switch (action.type) {
     case types.GET_LIST:
       return { listReq: 'pending' };
